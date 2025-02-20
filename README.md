@@ -1,4 +1,4 @@
-# 🔒 TorGuard Custom WireGuard App for OpenWRT  
+# TorGuard Custom WireGuard OpenWRT App
 
 ## 🌍 Overview  
 The **TorGuard Custom WireGuard App for OpenWRT** makes it simple and easy to paste any **WireGuard config** from the **TorGuard WireGuard Config Generator**.  
