@@ -1,0 +1,75 @@
+#!/bin/sh /etc/rc.common
+# TorGuard Wireguard init script
+
+START=10
+STOP=15
+
+USE_PROCD=1
+
+NAME=tgwireguard
+
+
+stop_service() {
+    WG_IF="wg"
+    WG_NETWORK="wireguard_${WG_IF}"
+    uci -q delete network.${WG_IF}
+    uci -q delete network.@${WG_NETWORK}[-1]
+    uci -q del_list firewall.wan.network="${WG_IF}"
+    uci -q del_list firewall.lan.network="${WG_IF}"
+    uci -q commit network
+    /etc/init.d/network reload
+    ifdown wan
+    ifup wan
+    ifdown wwan
+    ifup wwan
+    log "Wireguard stopped"
+    reload_config
+}
+
+
+start_service() {
+    WG_IF="wg"
+    WG_NETWORK="wireguard_${WG_IF}"
+
+    config_load tgwireguard_cfg
+
+    local TGWG_ADDR
+    local TGWG_PRIVKEY
+    local TGWG_PUBKEY
+    local TGWG_ENDHOST
+    local TGWG_ENDPORT
+    local TGWG_ALLOWEDIP
+    local TG_MODE
+
+    config_get TGWG_PRIVKEY settings TGWG_PRIVKEY
+    config_get TGWG_ADDR settings TGWG_ADDR
+    config_get TGWG_PUBKEY settings TGWG_PUBKEY
+    config_get TGWG_ENDHOST settings TGWG_ENDHOST
+    config_get TGWG_ENDPORT settings TGWG_ENDPORT
+    config_get TGWG_ALLOWEDIP settings TGWG_ALLOWEDIP
+    config_get TG_MODE settings TG_MODE
+
+    uci -q del network.@${WG_NETWORK}[-1]
+    uci -q del network.${WG_IF}
+    uci -q set network.${WG_IF}=interface
+    uci -q set network.${WG_IF}.proto='wireguard'
+    uci -q add network ${WG_NETWORK}
+    uci -q set network.${WG_IF}.private_key="${TGWG_PRIVKEY}"
+    uci -q add_list network.${WG_IF}.addresses="${TGWG_ADDR}"
+    uci -q set network.@${WG_NETWORK}[-1].public_key="${TGWG_PUBKEY}"
+    uci -q add_list network.@${WG_NETWORK}[-1].allowed_ips="${TGWG_ALLOWEDIP}"
+    uci -q add_list network.@${WG_NETWORK}[-1].allowed_ips="::/0"
+    uci -q set network.@${WG_NETWORK}[-1].route_allowed_ips="1"
+    uci -q set network.@${WG_NETWORK}[-1].endpoint_host="${TGWG_ENDHOST}"
+    uci -q set network.@${WG_NETWORK}[-1].endpoint_port="${TGWG_ENDPORT}"
+    uci -q set network.@${WG_NETWORK}[-1].persistent_keepalive="25"
+
+    uci -q rename firewall.@zone[0]="lan"
+    uci -q rename firewall.@zone[1]="wan"
+    uci -q del_list firewall.${TG_MODE}.network="${WG_IF}"
+    uci -q add_list firewall.${TG_MODE}.network="${WG_IF}"
+    uci -q commit network
+    uci -q commit firewall
+    reload_config
+}
+
