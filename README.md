@@ -33,7 +33,7 @@ cd ~/openwrt/package
 
 2️⃣ **Clone the Repository**  
 ```bash
-git clone https://github.com/TorGuard/tgwireguard.git
+git clone https://github.com/torguardvpn/tgwireguard.git
 ```
 
 3️⃣ **Compile the Package**  
@@ -45,7 +45,7 @@ make package/tgwireguard/compile V=s
 4️⃣ **Locate the `.ipk` File**  
 After compilation, the package will be found in:  
 ```
-~/openwrt/bin/packages/<target_architecture>/base/tgwireguard.ipk
+~/openwrt/bin/packages/<target_architecture>/base/tgwireguard_2.0.9-r0_all.ipk
 ```
 *(Replace `<target_architecture>` with your OpenWRT device's architecture.)*  
 
@@ -54,7 +54,7 @@ After compilation, the package will be found in:
 ### 📦 Install Precompiled `.ipk` Package  
 
 #### 🖥️ Method 1: Upload via OpenWRT Web UI  
-1️⃣ **Download the `.ipk` file** from the [GitHub Releases](https://github.com/TorGuard/tgwireguard/releases).  
+1️⃣ **Download the `.ipk` file** from: https://github.com/torguardvpn/tgwireguard/releases/download/v2.0.9-r0/tgwireguard_2.0.9-r0_all.ipk 
 2️⃣ Log into **OpenWRT Web Interface**.  
 3️⃣ Navigate to **System ⚙️ → Software**.  
 4️⃣ Click **Upload Package**, select the `.ipk` file, and click **Install**.  
@@ -70,7 +70,7 @@ ssh root@192.168.1.1
 2️⃣ **Download and Install the Package**  
 ```bash
 cd /tmp
-wget https://github.com/TorGuard/tgwireguard/releases/latest/download/tgwireguard.ipk
+wget https://github.com/torguardvpn/tgwireguard/releases/download/v2.0.9-r0/tgwireguard_2.0.9-r0_all.ipk
 opkg install tgwireguard.ipk
 ```
 
@@ -81,14 +81,14 @@ opkg install tgwireguard.ipk
 1️⃣ Open the **TorGuard WireGuard App** in OpenWRT.  
 2️⃣ **Paste your WireGuard configuration** (from the TorGuard WireGuard Config Generator).  
 3️⃣ Click **Connect** to establish a WireGuard VPN tunnel.  
-4️⃣ (Optional) **Enable "Start at Boot"** to keep the VPN active after reboots.  
+4️⃣ **Enable "Start at Boot"** to keep the VPN active after reboots.  
 
 ---
 
 ## 🔗 Support & Updates  
 This OpenWRT app is **officially maintained by TorGuard**.  
 📞 **Support:** [TorGuard Support](https://torguard.net/)  
-📢 **Latest Releases:** [GitHub Releases](https://github.com/TorGuard/tgwireguard/releases)  
+📢 **Latest Releases:** [GitHub Releases](https://github.com/torguardvpn/tgwireguard/releases/) 
 
 ---
 
