@@ -33,6 +33,13 @@ start_service() {
 
     config_load tgwireguard_cfg
 
+    # Check if VPN is enabled
+    config_get TGWG_ENABLED settings TGWG_ENABLED
+    if [ "$TGWG_ENABLED" = "no" ]; then
+        logger -t tgwireguard "Wireguard custom VPN is disabled in config. Exiting."
+        exit 0
+    fi
+
     local TGWG_ADDR
     local TGWG_PRIVKEY
     local TGWG_PUBKEY
@@ -72,4 +79,5 @@ start_service() {
     uci -q commit firewall
     reload_config
 }
+
 
