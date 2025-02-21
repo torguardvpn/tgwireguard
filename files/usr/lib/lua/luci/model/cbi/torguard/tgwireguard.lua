@@ -53,6 +53,14 @@ ta = s:option(TextValue, "wgconfig")
 ta.rows = 20
 ta.wrap = "off"
 
+-- Enable WireGuard Option
+enabled_option = s:option(ListValue, "TGWG_ENABLED", "Enable WireGuard")
+enabled_option:value("yes", "Yes")
+enabled_option:value("no", "No")
+enabled_option.default = "no"
+enabled_option.optional = false
+enabled_option.rmempty = false
+
 -- Define the section for the WireGuard firewall zone
 f = m:section(TypedSection, "wgconfig", "WireGuard Firewall Zone: (wan = Remote VPN IP) (lan = Local VPN IP Gateway)")
 f.anonymous = true
